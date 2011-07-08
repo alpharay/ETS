@@ -119,8 +119,12 @@ class IncomingSMSAdmin(admin.ModelAdmin):
 
         
 
-admin.site.register(User,UserAdmin)
-admin.site.register(Category,CategoryAdmin)
-admin.site.register(SearchTag,SearchTagAdmin)
-admin.site.register(Company,CompanyAdmin)
-admin.site.register(Review,ReviewAdmin)
+admin.site.register(Consumer,ConsumerAdmin)
+admin.site.register(EventOrganizer,EventOrganizerAdmin)
+admin.site.register(EventCategory,EventCategoryAdmin)
+admin.site.register(Event,EventAdmin)
+admin.site.register(Tickets,TicketsAdmin)
+admin.site.register(Payment,PaymentAdmin)
+admin.site.register(Suggestions,SuggestionsAdmin)
+admin.site.register(OutgoingSMS,OutgoingSMSAdmin)
+admin.site.register(IncomingSMS,IncomingSMSAdmin)
