@@ -95,7 +95,7 @@ class SuggestionsAdmin(admin.ModelAdmin):
 class OutgoingSMS(models.Model):
     reciever =  models.CharField(max_length=30)
     message =  models.CharField(max_length=160)
-    status=models.BooleanField    
+    status=models.BooleanField()*    
     date=models.DateField(auto_now_add=True) 
     time=models.TimeField()
     
@@ -119,12 +119,8 @@ class IncomingSMSAdmin(admin.ModelAdmin):
 
         
 
-admin.site.register(Consumer,ConsumerAdmin)
-admin.site.register(EventOrganizer,EventOrganizerAdmin)
-admin.site.register(EventCategory,EventCategoryAdmin)
-admin.site.register(Event,EventAdmin)
-admin.site.register(Tickets,TicketsAdmin)
-admin.site.register(Payment,PaymentAdmin)
-admin.site.register(Suggestions,SuggestionsAdmin)
-admin.site.register(OutgoingSMS,OutgoingSMSAdmin)
-admin.site.register(IncomingSMS,IncomingSMSAdmin)
+admin.site.register(User,UserAdmin)
+admin.site.register(Category,CategoryAdmin)
+admin.site.register(SearchTag,SearchTagAdmin)
+admin.site.register(Company,CompanyAdmin)
+admin.site.register(Review,ReviewAdmin)
