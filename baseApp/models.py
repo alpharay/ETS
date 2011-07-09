@@ -95,7 +95,7 @@ class SuggestionsAdmin(admin.ModelAdmin):
 class OutgoingSMS(models.Model):
     reciever =  models.CharField(max_length=30)
     message =  models.CharField(max_length=160)
-    status=models.BooleanField()*    
+    status=models.BooleanField()   
     date=models.DateField(auto_now_add=True) 
     time=models.TimeField()
     
