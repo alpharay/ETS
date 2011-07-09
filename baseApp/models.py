@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib import admin
-
+EventOrganizer
 class Consumer(models.Model):
     first_name= models.CharField(max_length=30,blank=True)
     other_name=models.CharField(max_length=30,blank=True)    
@@ -14,7 +14,7 @@ class Consumer(models.Model):
 class ConsumerAdmin(admin.ModelAdmin):
     pass
 
-class EventOrganizer(models.Model):
+class (models.Model):
     name= models.CharField(max_length=60)
     natID = models.CharField(max_length=15)
     phone1=models.CharField(max_length=12)
@@ -85,6 +85,7 @@ class Payment(models.Model):
     paymentType =  models.CharField(max_length=20)
     operator =  models.CharField(max_length=20)
     cart =  models.ForeignKey(Cart)   
+    TransactionID =  models.CharField(max_length=20)
     created=models.DateField(auto_now_add=True)
     paid =  models.BooleanField()
     
