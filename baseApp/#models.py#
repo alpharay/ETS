@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib import admin
-EventOrganizer
+
 class Consumer(models.Model):
     #firstName= models.CharField(max_length=30)
     #otherName=models.CharField(max_length=30)    
@@ -12,7 +12,7 @@ class Consumer(models.Model):
 class ConsumerAdmin(admin.ModelAdmin):
     pass
 
-class (models.Model):
+class EventOrganizer(models.Model):
     name= models.CharField(max_length=60)
     services = models.TextField()
     averageRating=models.CharField(max_length=60)
@@ -70,21 +70,11 @@ class TicketsAdmin(admin.ModelAdmin):
     pass
     
 class Payment(models.Model):
-<<<<<<< HEAD
-    paymentType =  models.CharField(max_length=20)
-    operator =  models.CharField(max_length=20)
-    cart =  models.ForeignKey(Cart)   
-    TransactionID =  models.CharField(max_length=20)
-    created=models.DateField(auto_now_add=True)
-    paid =  models.BooleanField()
-    
-=======
     paymentType =  models.CharField(max_length=30)
     operator =  models.CharField(max_length=30)
     ticket =  models.ForeignKey(Tickets)
     phone=models.CharField(max_length=30)    
     date=models.DateField(auto_now_add=True)
->>>>>>> 51d5ab0dd461b63e1188b62a66ff1050a2e05afd
     def __unicode__(self):
         return self.tag 
 
@@ -105,7 +95,7 @@ class SuggestionsAdmin(admin.ModelAdmin):
 class OutgoingSMS(models.Model):
     reciever =  models.CharField(max_length=30)
     message =  models.CharField(max_length=160)
-    status=models.BooleanField()   
+    status=models.BooleanField()*    
     date=models.DateField(auto_now_add=True) 
     time=models.TimeField()
     
