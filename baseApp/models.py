@@ -2,35 +2,36 @@ from django.db import models
 from django.contrib import admin
 
 class Consumer(models.Model):
-    #firstName= models.CharField(max_length=30)
-    #otherName=models.CharField(max_length=30)    
-    email=models.EmailField()
-    phone=models.CharField(max_length=30)     
+    first_name= models.CharField(max_length=30,blank=True)
+    other_name=models.CharField(max_length=30,blank=True)    
+    email=models.EmailField(blank=True)
+    phone=models.CharField(max_length=30) 
+    created=models.DateTimeField(auto_now_add=True)
+        
     def __unicode__(self):
-        return self.firstName+' '+self.lastName
+        return self.phone 
 
 class ConsumerAdmin(admin.ModelAdmin):
     pass
 
 class EventOrganizer(models.Model):
     name= models.CharField(max_length=60)
-    services = models.TextField()
-    averageRating=models.CharField(max_length=60)
-    categories=models.ForeignKey(Category)
-    phone=models.CharField(max_length=60)
-    email=models.CharField(max_length=60)
-    city=models.CharField(max_length=60)
-    hours=models.CharField(max_length=60)
+    natID = models.CharField(max_length=15)
+    phone1=models.CharField(max_length=12)
+    phone2=models.CharField(max_length=12,null=True)
+    email=models.EmailField(null=True)
+    created=models.DateTimeField(auto_now_add=True)
+
     def __unicode__(self):
-		return self.name  
-	
+        return self.name  
+    
 class EventOrganizerAdmin(admin.ModelAdmin):
     pass
 
 class EventCategory(models.Model):
     name = models.CharField(max_length=30)
-    user=models.ForeignKey(EventOrganizer)
-    date=models.DateField(auto_now_add=True)# to check the time the event was created
+    user=models.CharField(max_length=30)
+    created=models.DateField(auto_now_add=True)# to check the time the event was created
     
     def __unicode__(self):
         return self.name
@@ -42,12 +43,13 @@ class Event(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(EventCategory)
     venue = models.CharField(max_length=30)
-    location = models.CharField(max_length=30)
-    date=models.DateField()
-    date=models.DateField(auto_now_add=True)
-    time=models.TimeField()
-    user=models.ForeignKey(EventOrganizer)    
-    
+    locationX = models.CharField(max_length=30,blank=True)# *
+    locationY = models.CharField(max_length=30,blank=True)# *
+    event_date=models.DateField()
+    created=models.DateField(auto_now_add=True)
+    event_time=models.TimeField()
+    event_Rep=models.ForeignKey(EventOrganizer)   
+    #poster = models.ImageField(upload_to='/tmp',null=True) 
     def __unicode__(self):
         return self.name
 
@@ -55,49 +57,50 @@ class EventAdmin(admin.ModelAdmin):
     pass
         
 
-class Tickets(models.Model):
+class Ticket(models.Model):
     ticketType =  models.CharField(max_length=30)
     price =  models.CharField(max_length=30)
     pin=models.CharField(max_length=30)    
     serialNo=models.CharField(max_length=30)
     event =  models.ForeignKey(Event)
-    paid =  models.CharField(max_length=30)
+    paid =  models.BooleanField()
     #order =  models.CharField(max_length=30)
     def __unicode__(self):
-        return self.tag 
+        return self.ticketType 
 
-class TicketsAdmin(admin.ModelAdmin):
+class TicketAdmin(admin.ModelAdmin):
     pass
     
 class Payment(models.Model):
     paymentType =  models.CharField(max_length=30)
     operator =  models.CharField(max_length=30)
-    ticket =  models.ForeignKey(Tickets)
+    ticket =  models.ForeignKey(Ticket)
     phone=models.CharField(max_length=30)    
-    date=models.DateField(auto_now_add=True)
+    created=models.DateField(auto_now_add=True)
+    
     def __unicode__(self):
-        return self.tag 
+        return self.paymentType +''+self.phone 
 
 class PaymentAdmin(admin.ModelAdmin):
     pass
     
-class Suggestions(models.Model):
+class Suggestion(models.Model):
     consumer =  models.ForeignKey(Event)
     suggestion =  models.TextField(max_length=30)
-    date=models.DateField(auto_now_add=True)   
+    created=models.DateField(auto_now_add=True)   
     
     def __unicode__(self):
         return self.tag 
 
-class SuggestionsAdmin(admin.ModelAdmin):
+class SuggestionAdmin(admin.ModelAdmin):
     pass
 
 class OutgoingSMS(models.Model):
-    reciever =  models.CharField(max_length=30)
-    message =  models.CharField(max_length=160)
-    status=models.BooleanField()*    
-    date=models.DateField(auto_now_add=True) 
-    time=models.TimeField()
+    reciever=models.CharField(max_length=30)
+    message=models.CharField(max_length=160)
+    sent=models.BooleanField()#chn from status >>> sent   
+    created=models.DateField(auto_now_add=True) 
+    time=models.TimeField(auto_now_add=True)
     
     def __unicode__(self):
         return self.tag 
@@ -106,10 +109,10 @@ class OutgoingSMSAdmin(admin.ModelAdmin):
     pass
     
 class IncomingSMS(models.Model):
-	reciever =  models.CharField(max_length=30)
-    message =  models.CharField(max_length=160)       
-    date=models.DateField(auto_now_add=True) 
-    time=models.TimeField()
+    reciever=models.CharField(max_length=30)
+    message=models.CharField(max_length=160)       
+    created=models.DateField(auto_now_add=True) 
+    time=models.TimeField(auto_now_add=True)
     
     def __unicode__(self):
         return self.tag 
@@ -117,14 +120,14 @@ class IncomingSMS(models.Model):
 class IncomingSMSAdmin(admin.ModelAdmin):
     pass
 
-        
-
 admin.site.register(Consumer,ConsumerAdmin)
 admin.site.register(EventOrganizer,EventOrganizerAdmin)
 admin.site.register(EventCategory,EventCategoryAdmin)
 admin.site.register(Event,EventAdmin)
-admin.site.register(Tickets,TicketsAdmin)
+admin.site.register(Ticket,TicketAdmin)
 admin.site.register(Payment,PaymentAdmin)
-admin.site.register(Suggestions,SuggestionsAdmin)
+admin.site.register(Suggestion,SuggestionAdmin)
 admin.site.register(OutgoingSMS,OutgoingSMSAdmin)
 admin.site.register(IncomingSMS,IncomingSMSAdmin)
+
+# Create your models here.
