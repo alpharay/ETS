@@ -71,6 +71,7 @@ class TicketsAdmin(admin.ModelAdmin):
     
 class Payment(models.Model):
 <<<<<<< HEAD
+<<<<<<< HEAD
     paymentType =  models.CharField(max_length=20)
     operator =  models.CharField(max_length=20)
     cart =  models.ForeignKey(Cart)   
@@ -79,11 +80,16 @@ class Payment(models.Model):
     paid =  models.BooleanField()
     
 =======
+=======
+>>>>>>> 51d5ab0dd461b63e1188b62a66ff1050a2e05afd
     paymentType =  models.CharField(max_length=30)
     operator =  models.CharField(max_length=30)
     ticket =  models.ForeignKey(Tickets)
     phone=models.CharField(max_length=30)    
     date=models.DateField(auto_now_add=True)
+<<<<<<< HEAD
+>>>>>>> 51d5ab0dd461b63e1188b62a66ff1050a2e05afd
+=======
 >>>>>>> 51d5ab0dd461b63e1188b62a66ff1050a2e05afd
     def __unicode__(self):
         return self.tag 
