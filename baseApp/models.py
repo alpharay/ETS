@@ -59,27 +59,37 @@ class EventAdmin(admin.ModelAdmin):
 
 class Ticket(models.Model):
     ticketType =  models.CharField(max_length=30)
-    price =  models.CharField(max_length=30)
+    price =  models.DecimalField(max_digits=10,decimal_places=2)
     pin=models.CharField(max_length=30)    
     serialNo=models.CharField(max_length=30)
     event =  models.ForeignKey(Event)
-    paid =  models.BooleanField()
     #order =  models.CharField(max_length=30)
     def __unicode__(self):
         return self.ticketType 
 
 class TicketAdmin(admin.ModelAdmin):
     pass
+
+
+class Cart(models.Model):
+    consumer=models.ForeignKey(Consumer) 
+    value=models.DecimalField(max_digits=10,decimal_places=2)
+    def __unicode__(self):
+        return self.consumer
+    
+class CartAdmin(admin.ModelAdmin):
+    pass
+
     
 class Payment(models.Model):
-    paymentType =  models.CharField(max_length=30)
-    operator =  models.CharField(max_length=30)
-    ticket =  models.ForeignKey(Ticket)
-    phone=models.CharField(max_length=30)    
+    paymentType =  models.CharField(max_length=20)
+    operator =  models.CharField(max_length=20)
+    cart =  models.ForeignKey(Cart)   
     created=models.DateField(auto_now_add=True)
+    paid =  models.BooleanField()
     
     def __unicode__(self):
-        return self.paymentType +''+self.phone 
+        return self.paymentType+' '+self.cart 
 
 class PaymentAdmin(admin.ModelAdmin):
     pass
@@ -90,26 +100,26 @@ class Suggestion(models.Model):
     created=models.DateField(auto_now_add=True)   
     
     def __unicode__(self):
-        return self.tag 
+        return self.suggestion 
 
 class SuggestionAdmin(admin.ModelAdmin):
     pass
 
 class OutgoingSMS(models.Model):
-    reciever=models.CharField(max_length=30)
+    reciever=models.ForeignKey(Consumer)
     message=models.CharField(max_length=160)
     sent=models.BooleanField()#chn from status >>> sent   
     created=models.DateField(auto_now_add=True) 
     time=models.TimeField(auto_now_add=True)
     
     def __unicode__(self):
-        return self.tag 
+        return self.message+' ' +reciever
 
 class OutgoingSMSAdmin(admin.ModelAdmin):
     pass
     
 class IncomingSMS(models.Model):
-    reciever=models.CharField(max_length=30)
+    sender=models.CharField(max_length=30)
     message=models.CharField(max_length=160)       
     created=models.DateField(auto_now_add=True) 
     time=models.TimeField(auto_now_add=True)
@@ -120,12 +130,28 @@ class IncomingSMS(models.Model):
 class IncomingSMSAdmin(admin.ModelAdmin):
     pass
 
+    
+class CartAdmin(admin.ModelAdmin):
+    pass
+
+class Order(models.Model):
+    cart=models.ForeignKey(Cart) 
+    ticket=models.ForeignKey(Ticket) 
+    def __unicode__(self):
+        return self.id
+    
+class OrderAdmin(admin.ModelAdmin):
+    pass
+    
+
 admin.site.register(Consumer,ConsumerAdmin)
 admin.site.register(EventOrganizer,EventOrganizerAdmin)
 admin.site.register(EventCategory,EventCategoryAdmin)
 admin.site.register(Event,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
 admin.site.register(Payment,PaymentAdmin)
+admin.site.register(Cart,CartAdmin)
+admin.site.register(Order,OrderAdmin)
 admin.site.register(Suggestion,SuggestionAdmin)
 admin.site.register(OutgoingSMS,OutgoingSMSAdmin)
 admin.site.register(IncomingSMS,IncomingSMSAdmin)
