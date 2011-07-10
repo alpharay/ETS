@@ -3,17 +3,19 @@ from django.contrib import admin
 
 class Consumer(models.Model):
     first_name= models.CharField(max_length=30,blank=True)
-    other_name=models.CharField(max_length=30,blank=True)    
+    other_name= models.CharField(max_length=30,blank=True)    
     email=models.EmailField(blank=True)
     phone=models.CharField(max_length=30) 
     created=models.DateTimeField(auto_now_add=True)
-        
     def __unicode__(self):
         return self.phone 
-
+    
 class ConsumerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('first_name','other_name','phone','email','created')
+    search_fields = ('first_name','other_name')
+    list_filter = ('created',)
 
+    
 class EventOrganizer(models.Model):
     name= models.CharField(max_length=60)
     natID = models.CharField(max_length=15)
@@ -21,23 +23,27 @@ class EventOrganizer(models.Model):
     phone2=models.CharField(max_length=12,null=True)
     email=models.EmailField(null=True)
     created=models.DateTimeField(auto_now_add=True)
-
     def __unicode__(self):
         return self.name  
     
 class EventOrganizerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name','phone1','email','created','natID')
+    search_fields = ('name',)
+    list_filter = ('created',)
+    #inlines = [EventInLine]
 
 class EventCategory(models.Model):
     name = models.CharField(max_length=30)
     user=models.CharField(max_length=30)
     created=models.DateField(auto_now_add=True)# to check the time the event was created
-    
     def __unicode__(self):
         return self.name
 
 class EventCategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name','user','created')
+    search_fields = ('name',)
+    list_filter = ('created',)
+    #inlines = [EventInLine]
     
 class Event(models.Model):
     name = models.CharField(max_length=30)
@@ -45,18 +51,20 @@ class Event(models.Model):
     venue = models.CharField(max_length=30)
     locationX = models.CharField(max_length=30,blank=True)# *
     locationY = models.CharField(max_length=30,blank=True)# *
-    event_date=models.DateField()
+    event_date=models.DateTimeField()
     created=models.DateField(auto_now_add=True)
-    event_time=models.TimeField()
     event_Rep=models.ForeignKey(EventOrganizer)   
     #poster = models.ImageField(upload_to='/tmp',null=True) 
     def __unicode__(self):
         return self.name
 
 class EventAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name','event_date','created','event_Rep')
+    search_fields = ('category','event_date','venue')
+    list_filter = ('event_date','created')
+    #inlines = [TicketInLine]
         
-
+        
 class Ticket(models.Model):
     ticketType =  models.CharField(max_length=30)
     price =  models.DecimalField(max_digits=10,decimal_places=2)
@@ -68,7 +76,8 @@ class Ticket(models.Model):
         return self.ticketType 
 
 class TicketAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pin','serialNo','ticketType')
+    search_fields = ('ticketType','event')
 
 
 class Cart(models.Model):
@@ -78,62 +87,64 @@ class Cart(models.Model):
         return self.consumer
     
 class CartAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('consumer','value')
+    search_fields = ('consumer','value')
+    
     
 class Payment(models.Model):
     paymentType =  models.CharField(max_length=20)
     operator =  models.CharField(max_length=20)
     cart =  models.ForeignKey(Cart)   
-    TransactionID =  models.CharField(max_length=20)
-    created=models.DateField(auto_now_add=True)
+    transactionID =  models.CharField(max_length=20)
+    created=models.DateTimeField(auto_now_add=True)
     paid =  models.BooleanField()
-    
     def __unicode__(self):
         return self.paymentType+' '+self.cart 
 
 class PaymentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('transactionID','paymentType','created','paid')
+    search_fields = ('transactionID','cart','created')
+    list_filter = ('created','paid')
+
     
 class Suggestion(models.Model):
     consumer =  models.ForeignKey(Event)
     suggestion =  models.TextField(max_length=30)
     created=models.DateField(auto_now_add=True)   
-    
     def __unicode__(self):
         return self.suggestion 
 
 class SuggestionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('consumer','created')
+    list_filter = ('created',)
+
 
 class OutgoingSMS(models.Model):
-    reciever=models.ForeignKey(Consumer)
+    receiver=models.ForeignKey(Consumer)
     message=models.CharField(max_length=160)
     sent=models.BooleanField()#chn from status >>> sent   
-    created=models.DateField(auto_now_add=True) 
-    time=models.TimeField(auto_now_add=True)
-    
+    created=models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
-        return self.message+' ' +reciever
+        return self.message+' '+self.receiver
 
 class OutgoingSMSAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('receiver','created','sent')
+    search_fields = ('receiver','sent')
+    list_filter = ('created',)
+
     
 class IncomingSMS(models.Model):
     sender=models.CharField(max_length=30)
     message=models.CharField(max_length=160)       
-    created=models.DateField(auto_now_add=True) 
-    time=models.TimeField(auto_now_add=True)
-    
+    created=models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
         return self.tag 
 
 class IncomingSMSAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('sender','created')
+    search_fields = ('sender',)
+    list_filter = ('created',)
 
-    
-class CartAdmin(admin.ModelAdmin):
-    pass
 
 class Order(models.Model):
     cart=models.ForeignKey(Cart) 
@@ -142,8 +153,9 @@ class Order(models.Model):
         return self.id
     
 class OrderAdmin(admin.ModelAdmin):
-    pass
-    
+    list_display = ('cart','ticket')
+    search_fields = ('cart','ticket')
+
 
 admin.site.register(Consumer,ConsumerAdmin)
 admin.site.register(EventOrganizer,EventOrganizerAdmin)
