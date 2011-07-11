@@ -16,57 +16,43 @@ def home(request):
     
     
 def categories_list(request, limit=100):
-	blog_list = EventCategory.objects.all()
-	t = loader.get_template('blog/list.html')
-	c = Context({'blog_list':blog_list})
+	category_list = EventCategory.objects.all()
+	t = loader.get_template('baseApp/categorySearch.html')
+	c = Context({'category_list':category_list})
 	return HttpResponse(t.render(c))
 
 def events_list(request, limit=100):
-	blog_list = Blog.objects.all()
-	t = loader.get_template('blog/list.html')
-	c = Context({'blog_list':blog_list})
+	event_list = Event.objects.all()
+	t = loader.get_template('baseApp/eventSearch.html')
+	c = Context({'event_list':event_list})
 	return HttpResponse(t.render(c))
 
-class CommentForm(ModelForm):
+class EventForm(ModelForm):
 	class Meta:
-		model=Comment
-		exclude=['post','author']
+		model=Event
+		#exclude=['post','author']
 	
 @csrf_exempt
-def event_detail(request,id,showComments=False):
-	single_blog = Blog.objects.get(id=id)
-	print single_blog	
-	if showComments:
-		comment = Comment.objects.filter(post__id=id)
-		print comment
+def event_detail(request,id,showEvents=False):
+	single_eventCat = EventCategory.objects.get(id=id)
+	print single_eventCat	
+	if showEvents:
+		event = Event.objects.filter(post__id=id)
+		print event
 		#Start of form code
 		if request.method == 'POST':
-			comment= Comment(post=single_blog,author=request.user.username)
-			form = CommentForm(request.POST,instance=comment)
+			event= Event(post=single_eventCat)
+			form = EventForm(request.POST,instance=event)
 			if form.is_valid():
 				form.save()
 				return HttpResponseRedirect(request.path)
 		else:
-			form = CommentForm()
+			form = EventForm()
 		#end of form code
 
-	t = loader.get_template('blog/detail.html') # to detail.html
-	c = Context({'comments':comment,'blog':single_blog,'form':form.as_p(),'username':request.user.username})
+	t = loader.get_template('baseApp/eventDetail.html') # to show the details of the event
+	c = Context({'events':event,'single_eventCat':single_eventCat,'form':form.as_p()})
 	return HttpResponse(t.render(c))
 
 
-@csrf_exempt	
-def edit_comment(request,id):
-	comment = Comment.objects.get(pk=id)
-	if request.user.username==comment.author:	
-		if request.method == 'POST':			
-			form = CommentForm(request.POST,instance=comment)
-			if form.is_valid():
-				form.save()
-				return HttpResponseRedirect('/blog/detail/'+str(comment.post.id)+'/True')
-		else:
-			form = CommentForm(instance=comment)
-			t = loader.get_template('blog/editcomment.html') # to editcomment.html
-			c = Context({'form':form.as_p()})
-			return HttpResponse(t.render(c))
-	return HttpResponse("You do not have enough permissions to edit this comment")
+
