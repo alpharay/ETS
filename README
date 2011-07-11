@@ -1,0 +1,4 @@
+Consumers and eventorganizers are now all Users
+	Added a class UserProfile in 'baseApp/models.py'
+	# Added "baseApp.UserProfile" to the AUTH_PROFILE_MODULE line in settings.py
+-kidfisch

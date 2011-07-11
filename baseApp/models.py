@@ -1,36 +1,46 @@
 from django.db import models
 from django.contrib import admin
+from django.contrib.auth.models import User	# necessary for the user profile to work
 
-class Consumer(models.Model):
-    first_name= models.CharField(max_length=30,blank=True)
-    other_name= models.CharField(max_length=30,blank=True)    
-    email=models.EmailField(blank=True)
-    phone=models.CharField(max_length=30) 
-    created=models.DateTimeField(auto_now_add=True)
-    def __unicode__(self):
-        return self.phone 
-    
-class ConsumerAdmin(admin.ModelAdmin):
-    list_display = ('first_name','other_name','phone','email','created')
-    search_fields = ('first_name','other_name')
-    list_filter = ('created',)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)        # This field is required.
+    phone=models.CharField(max_length=12)
+    isOrganizingEvent = models.BooleanField()
+    if isOrganizingEvent:
+        natID = models.CharField(max_length=15, blank=True)
+        phone2=models.CharField(max_length=12,null=True)
 
-    
-class EventOrganizer(models.Model):
-    name= models.CharField(max_length=60)
-    natID = models.CharField(max_length=15)
-    phone1=models.CharField(max_length=12)
-    phone2=models.CharField(max_length=12,null=True)
-    email=models.EmailField(null=True)
-    created=models.DateTimeField(auto_now_add=True)
-    def __unicode__(self):
-        return self.name  
-    
-class EventOrganizerAdmin(admin.ModelAdmin):
-    list_display = ('name','phone1','email','created','natID')
-    search_fields = ('name',)
-    list_filter = ('created',)
-    #inlines = [EventInLine]
+
+#class Consumer(models.Model):
+#    first_name= models.CharField(max_length=30,blank=True)
+#    other_name= models.CharField(max_length=30,blank=True)    
+#    email=models.EmailField(blank=True)
+#    phone=models.CharField(max_length=12) 
+#    created=models.DateTimeField(auto_now_add=True)
+#    def __unicode__(self):
+#        return self.phone 
+#    
+#class ConsumerAdmin(admin.ModelAdmin):
+#    list_display = ('first_name','other_name','phone','email','created')
+#    search_fields = ('first_name','other_name')
+#    list_filter = ('created',)
+#
+#    
+#class EventOrganizer(models.Model):
+#    name= models.CharField(max_length=60)
+#    natID = models.CharField(max_length=15)
+#    phone1=models.CharField(max_length=12)
+#    phone2=models.CharField(max_length=12,null=True)
+#    email=models.EmailField(null=True)
+#    created=models.DateTimeField(auto_now_add=True)
+#    def __unicode__(self):
+#        return self.name  
+#    
+#class EventOrganizerAdmin(admin.ModelAdmin):
+#    list_display = ('name','phone1','email','created','natID')
+#    search_fields = ('name',)
+#    list_filter = ('created',)
+#    #inlines = [EventInLine]
 
 class EventCategory(models.Model):
     name = models.CharField(max_length=30)
@@ -53,7 +63,8 @@ class Event(models.Model):
     locationY = models.CharField(max_length=30,blank=True)# *
     event_date=models.DateTimeField()
     created=models.DateField(auto_now_add=True)
-    event_Rep=models.ForeignKey(EventOrganizer)   
+    #event_Rep=models.ForeignKey(EventOrganizer)
+    event_Rep=models.ForeignKey(User)   
     #poster = models.ImageField(upload_to='/tmp',null=True) 
     def __unicode__(self):
         return self.name
@@ -81,7 +92,8 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class Cart(models.Model):
-    consumer=models.ForeignKey(Consumer) 
+    #consumer=models.ForeignKey(Consumer)
+    consumer=models.ForeignKey(User) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
     def __unicode__(self):
         return self.consumer
@@ -120,9 +132,10 @@ class SuggestionAdmin(admin.ModelAdmin):
 
 
 class OutgoingSMS(models.Model):
-    receiver=models.ForeignKey(Consumer)
+    #receiver=models.ForeignKey(Consumer)
+    receiver=models.ForeignKey(User)
     message=models.CharField(max_length=160)
-    sent=models.BooleanField()#chn from status >>> sent   
+    sent=models.BooleanField()	#chn from status >>> sent   
     created=models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
         return self.message+' '+self.receiver
@@ -157,8 +170,8 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('cart','ticket')
 
 
-admin.site.register(Consumer,ConsumerAdmin)
-admin.site.register(EventOrganizer,EventOrganizerAdmin)
+#admin.site.register(Consumer,ConsumerAdmin)
+#admin.site.register(EventOrganizer,EventOrganizerAdmin)
 admin.site.register(EventCategory,EventCategoryAdmin)
 admin.site.register(Event,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
