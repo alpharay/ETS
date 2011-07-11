@@ -1,9 +1,8 @@
 # Django settings for ETS project.
 
-import os # put this at the top of the file
+import os 
 
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
-DIRNAME = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -50,12 +49,14 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''#os.path.join(DIRNAME, 'static/')
+#MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static/')
+MEDIA_ROOT =''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''#/static/'
+#MEDIA_URL = '/static/'
+MEDIA_URL =''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -66,11 +67,13 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+#STATIC_URL = ''
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
+#ADMIN_MEDIA_PREFIX = '/media/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -151,10 +154,5 @@ LOGGING = {
         },
     }
 }
-
-#if settings.DEBUG:
-#    urlpatterns += patterns('django.views.static',                            
-#                            (r'^%s(?P<path>.*)$' % (settings.MEDIA_URL[1:],),'serve', 
-#                             {'document_root': settings.MEDIA_ROOT,'show_indexes': True }),)
 
 

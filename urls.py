@@ -18,3 +18,11 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^app/', include('ETS.baseApp.urls')),
 )	
+
+#if settings.DEBUG:
+#  urlpatterns += patterns('django.views.static',
+#    (r'^%s(?P<path>.*)$' % (settings.MEDIA_URL[1:],), 'serve', {
+#      'document_root': settings.MEDIA_ROOT,
+#      'show_indexes': True }),)
+
+#(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/path/to/media'}),
