@@ -44,13 +44,12 @@ class UserProfile(models.Model):
 
 class EventCategory(models.Model):
     name = models.CharField(max_length=30)
-    user=models.CharField(max_length=30)
     created=models.DateField(auto_now_add=True)# to check the time the event was created
     def __unicode__(self):
         return self.name
 
 class EventCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name','user','created')
+    list_display = ('name','created')
     search_fields = ('name',)
     list_filter = ('created',)
     #inlines = [EventInLine]

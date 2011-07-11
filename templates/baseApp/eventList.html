@@ -1,10 +1,10 @@
 {% extends 'baseApp/index.html' %}
 {% block content %}
 
-{% for cat in category_list %}
+{% for event in events %}
 <ul>
 <li>
-<h5><a href="/baseApp/events/{{ cat.id }}">{{ cat.name}}</a></h5>
+<h5><a href="/baseApp/detail/{{ event.id }}">{{ event.name}}</a></h5>
 </li>
 </ul>
 {% endfor %}
