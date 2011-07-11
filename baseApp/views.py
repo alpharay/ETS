@@ -5,9 +5,12 @@ from django.template import Context, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from models import *
+from django.contrib.auth.models import User
+from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     t = loader.get_template('baseApp/index.html')
     c = Context(dict())
     return HttpResponse(t.render(c))
+

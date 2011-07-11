@@ -1,0 +1,14 @@
+<a href='/baseApp/list/'>Blog</a>
+<div align="center">
+{% if logged_in %}
+you are already logged in. 
+<a href="/reg/logout/">logout</a>
+{% else %}
+<h5 colour='red'>{{ log }}</h5>
+<form action="." method="post">
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+{% endif %}
+</div>
+

@@ -8,3 +8,4 @@ url(r'^login/$', 'reg.views.loginView'),
 url(r'^logout/$', 'reg.views.logoutView'),
 url(r'^signup/$', 'reg.views.signupView'),
 )
+

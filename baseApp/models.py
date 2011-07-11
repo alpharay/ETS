@@ -54,7 +54,9 @@ class EventCategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('created',)
     #inlines = [EventInLine]
-    
+
+
+
 class Event(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(EventCategory)
@@ -68,14 +70,13 @@ class Event(models.Model):
     #poster = models.ImageField(upload_to='/tmp',null=True) 
     def __unicode__(self):
         return self.name
-
+    
 class EventAdmin(admin.ModelAdmin):
     list_display = ('name','event_date','created','event_Rep')
     search_fields = ('category','event_date','venue')
     list_filter = ('event_date','created')
-    #inlines = [TicketInLine]
-        
-        
+
+
 class Ticket(models.Model):
     ticketType =  models.CharField(max_length=30)
     price =  models.DecimalField(max_digits=10,decimal_places=2)
@@ -91,36 +92,27 @@ class TicketAdmin(admin.ModelAdmin):
     search_fields = ('ticketType','event')
 
 
+
 class Cart(models.Model):
-    #consumer=models.ForeignKey(Consumer)
-    consumer=models.ForeignKey(User) 
+    transactionID =  models.CharField(max_length=20)
+    consumer=models.ForeignKey(Ticket) 
+    tickets=models.ForeignKey(User) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
-    def __unicode__(self):
-        return self.consumer
-    
-class CartAdmin(admin.ModelAdmin):
-    list_display = ('consumer','value')
-    search_fields = ('consumer','value')
-    
-    
-class Payment(models.Model):
     paymentType =  models.CharField(max_length=20)
     operator =  models.CharField(max_length=20)
-    cart =  models.ForeignKey(Cart)   
-    transactionID =  models.CharField(max_length=20)
     created=models.DateTimeField(auto_now_add=True)
     paid =  models.BooleanField()
     def __unicode__(self):
         return self.paymentType+' '+self.cart 
 
-class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('transactionID','paymentType','created','paid')
-    search_fields = ('transactionID','cart','created')
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('consumer','transactionID','paymentType','created','value','paid')
+    search_fields = ('transactionID','cart','value','created')
     list_filter = ('created','paid')
-
-    
+    #inlines = [TicketInLine]
+        
 class Suggestion(models.Model):
-    consumer =  models.ForeignKey(Event)
+    consumer =  models.ForeignKey(User,blank=True)
     suggestion =  models.TextField(max_length=30)
     created=models.DateField(auto_now_add=True)   
     def __unicode__(self):
@@ -159,25 +151,13 @@ class IncomingSMSAdmin(admin.ModelAdmin):
     list_filter = ('created',)
 
 
-class Order(models.Model):
-    cart=models.ForeignKey(Cart) 
-    ticket=models.ForeignKey(Ticket) 
-    def __unicode__(self):
-        return self.id
-    
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('cart','ticket')
-    search_fields = ('cart','ticket')
-
-
 #admin.site.register(Consumer,ConsumerAdmin)
 #admin.site.register(EventOrganizer,EventOrganizerAdmin)
 admin.site.register(EventCategory,EventCategoryAdmin)
 admin.site.register(Event,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
-admin.site.register(Payment,PaymentAdmin)
+#admin.site.register(Payment,PaymentAdmin)
 admin.site.register(Cart,CartAdmin)
-admin.site.register(Order,OrderAdmin)
 admin.site.register(Suggestion,SuggestionAdmin)
 admin.site.register(OutgoingSMS,OutgoingSMSAdmin)
 admin.site.register(IncomingSMS,IncomingSMSAdmin)
