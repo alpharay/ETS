@@ -54,8 +54,6 @@ class EventCategoryAdmin(admin.ModelAdmin):
     list_filter = ('created',)
     #inlines = [EventInLine]
 
-
-
 class Event(models.Model):
     name = models.CharField(max_length=30)
     category = models.ForeignKey(EventCategory)
@@ -71,31 +69,14 @@ class Event(models.Model):
         return self.name
     
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name','event_date','created','event_Rep')
+    list_display = ('name','category','event_date','created','event_Rep')
     search_fields = ('category','event_date','venue')
     list_filter = ('event_date','created')
 
 
-class Ticket(models.Model):
-    ticketType =  models.CharField(max_length=30)
-    price =  models.DecimalField(max_digits=10,decimal_places=2)
-    pin=models.CharField(max_length=30)    
-    serialNo=models.CharField(max_length=30)
-    event =  models.ForeignKey(Event)
-    #order =  models.CharField(max_length=30)
-    def __unicode__(self):
-        return self.ticketType 
-
-class TicketAdmin(admin.ModelAdmin):
-    list_display = ('pin','serialNo','ticketType')
-    search_fields = ('ticketType','event')
-
-
-
 class Cart(models.Model):
     transactionID =  models.CharField(max_length=20)
-    consumer=models.ForeignKey(Ticket) 
-    tickets=models.ForeignKey(User) 
+    consumer=models.ForeignKey(User) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
     paymentType =  models.CharField(max_length=20)
     operator =  models.CharField(max_length=20)
@@ -109,6 +90,34 @@ class CartAdmin(admin.ModelAdmin):
     search_fields = ('transactionID','cart','value','created')
     list_filter = ('created','paid')
     #inlines = [TicketInLine]
+
+class TicketType(models.Model): 
+    name =  models.CharField(max_length=30)
+    price =  models.DecimalField(max_digits=10,decimal_places=2)   
+    event =  models.ForeignKey(Event)
+    #order =  models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.name 
+
+class TicketTypeAdmin(admin.ModelAdmin):
+    list_display = ('name','price','event')
+    search_fields = ('name','event')
+
+class Ticket(models.Model):
+    cart=models.ForeignKey(Cart,blank=True) 
+    event=models.ForeignKey(Event,blank=True) 
+    ticketType = models.ForeignKey(TicketType)
+    pin=models.CharField(max_length=30)    
+    serialNo=models.CharField(max_length=30)
+    #order =  models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.ticketType 
+
+
+
+class TicketAdmin(admin.ModelAdmin):
+    list_display = ('pin','serialNo','ticketType')
+    search_fields = ('ticketType','event')
         
 class Suggestion(models.Model):
     consumer =  models.ForeignKey(User,blank=True)
@@ -155,7 +164,7 @@ class IncomingSMSAdmin(admin.ModelAdmin):
 admin.site.register(EventCategory,EventCategoryAdmin)
 admin.site.register(Event,EventAdmin)
 admin.site.register(Ticket,TicketAdmin)
-#admin.site.register(Payment,PaymentAdmin)
+admin.site.register(TicketType,TicketTypeAdmin)
 admin.site.register(Cart,CartAdmin)
 admin.site.register(Suggestion,SuggestionAdmin)
 admin.site.register(OutgoingSMS,OutgoingSMSAdmin)

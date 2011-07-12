@@ -1,15 +1,21 @@
 {% extends 'baseApp/index.html' %}
 {% block content %}
+<div  data-role="page" data-theme="Swatch D"> 
 
+<ul data-role="listview" data-theme="c">
+<li class="ui-li-aside">{{ event_details.name}}</li>
+<li>{{ event_details.venue}}</li>
+<li>{{ event_details.event_date}}</li>
+</ul>
 
-
-<div><h5>{{ event_details.name}}</h5></div>
-<div><h6>{{ event_details.venue}}</h6></div>
-<div><h6>{{ event_details.event_date}}</h6></div>
-<div>
+<h5>Event location</h5>
+{%if event_details.locationX%}
 <img src="http://maps.google.com/maps/api/staticmap?center={{ event_details.locationX}},{{ event_details.locationY}}&markers=color:blue%7Clabel:E%7C{{ event_details.locationX}},{{ event_details.locationY}}%7Ccolor:blue&zoom=15&size=300x400&sensor=false">
+{%else%}
+<img src="http://maps.google.com/maps/api/staticmap?center={{ event_details.venue }}&markers=color:blue%7Clabel:E%7C{{ event_details.locationX}},{{ event_details.locationY}}%7Ccolor:blue&zoom=15&size=300x400&sensor=false">
+{%endif%}
 </div>
 
-
+</div>
 {% endblock %}
-<!--"-->
+

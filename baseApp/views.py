@@ -8,6 +8,12 @@ from models import *
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from django import forms
+
+
+class AddButton(forms.Form):
+    pass
+    
 
 def home(request):
     t = loader.get_template('baseApp/welcome.html')
@@ -15,6 +21,7 @@ def home(request):
     return HttpResponse(t.render(c))
     
 def categories_list(request):
+#    return HttpResponse('am here')
     category_list = EventCategory.objects.all()
     return render_to_response('baseApp/categoryView.html', {'category_list':category_list})
 
@@ -30,11 +37,30 @@ def categories_list(request):
 #	class Meta:
 #		model=Event
 #		exclude=['post','author']
+def cart_list(request,id):
+    if id:        
+        cart = Ticket.objects.filter(Cart__id=id)
+        return render_to_response('baseApp/cart.html', {'cart':cart})
+    else:
+        return HttpResponse('<div align="center"><h5>Cart is empty</h5></div>')
+
 	
 def events_list(request,id):
     event_list = Event.objects.filter(category__id=id)
     return render_to_response('baseApp/eventList.html', {'events':event_list})
 
+@csrf_exempt
 def event_detail(request,id):
-    eventDet = Event.objects.get(id=id)
-    return render_to_response('baseApp/eventDetails.html', {'event_details':eventDet})
+    
+    if request.method == 'POST':
+        pass
+        #create cart and add ticket information
+        #
+    else:
+        
+        form = AddButton()
+        event = Event.objects.get(id=id)
+        tickets = Ticket.objects.filter(event__id=id)
+        type=TicketType.objects.filter(event__id=id)
+        #ticket types and thier count
+        return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'tickets':tickets,'ticket_types':type})

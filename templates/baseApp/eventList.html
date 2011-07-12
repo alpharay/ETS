@@ -1,12 +1,13 @@
 {% extends 'baseApp/index.html' %}
 {% block content %}
 
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">Event List</div> 
 {% for event in events %}
-<ul>
-<li>
-<h5><a href="/baseApp/detail/{{ event.id }}">{{ event.name}}</a></h5>
-</li>
+<ul data-role="listview" data-theme="c">
+<li><a href="/baseApp/detail/{{ event.id }}" rel="external", data-ajax="false">{{ event.name}}</a></li>	
 </ul>
 {% endfor %}
+</div>
 {% endblock %}
 
