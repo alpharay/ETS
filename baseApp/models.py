@@ -76,17 +76,17 @@ class EventAdmin(admin.ModelAdmin):
 
 class Cart(models.Model):
     transactionID =  models.CharField(max_length=20,blank=True)
-    consumer=models.ForeignKey(User) 
+    consumerPhone=models.CharField(max_length=20) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
-    paymentType =  models.CharField(max_length=20)
-    operator =  models.CharField(max_length=20)
+    paymentType =  models.CharField(max_length=20,blank=True)
+    operator =  models.CharField(max_length=20,blank=True)
     created=models.DateTimeField(auto_now_add=True)
     paid =  models.BooleanField()
     def __unicode__(self):
         return self.paymentType+' '+self.cart 
 
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('consumer','transactionID','paymentType','created','value','paid')
+    list_display = ('consumerPhone','transactionID','paymentType','created','value','paid')
     search_fields = ('transactionID','cart','value','created')
     list_filter = ('created','paid')
     #inlines = [TicketInLine]
@@ -105,7 +105,7 @@ class TicketTypeAdmin(admin.ModelAdmin):
 
 class Ticket(models.Model):
     cart=models.ForeignKey(Cart,blank=True) 
-    event=models.ForeignKey(Event,blank=True) 
+    event=models.ForeignKey(Event) 
     ticketType = models.ForeignKey(TicketType)
     pin=models.CharField(max_length=30)    
     quantity=models.IntegerField(max_length=5)
@@ -134,7 +134,7 @@ class SuggestionAdmin(admin.ModelAdmin):
 
 class OutgoingSMS(models.Model):
     #receiver=models.ForeignKey(Consumer)
-    receiver=models.ForeignKey(User)
+    receiver=models.CharField(max_length=15)
     message=models.CharField(max_length=160)
     sent=models.BooleanField()	#chn from status >>> sent   
     created=models.DateTimeField(auto_now_add=True)
@@ -148,7 +148,7 @@ class OutgoingSMSAdmin(admin.ModelAdmin):
 
     
 class IncomingSMS(models.Model):
-    sender=models.CharField(max_length=30)
+    sender=models.CharField(max_length=15)
     message=models.CharField(max_length=160)       
     created=models.DateTimeField(auto_now_add=True)
     read=models.BooleanField()

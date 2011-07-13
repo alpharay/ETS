@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
+import time
+import datetime
+import re
     
 class AddButton(forms.Form):
     pass
@@ -45,7 +48,10 @@ class CartForm(ModelForm):
     class Meta:
         model =Cart
         #exclude=['author','post']     
-       
+        
+class TicketForm(ModelForm):
+    class Meta:
+        model =Ticket
 
 def cart_list(request,id):
     if id:        
@@ -59,18 +65,46 @@ def events_list(request,id):
     event_list = Event.objects.filter(category__id=id)
     return render_to_response('baseApp/eventList.html', {'events':event_list})
 
+def isPhone(inp):
+     result = re.search(r'^0[1-9]{9}', inp,re.L)
+    # print result.groups() 
+     if result:
+         return True
+     else:
+         return False
+
 @csrf_exempt
 def event_detail(request,id):
     event = Event.objects.get(id=id)
     ticketsType=TicketType.objects.filter(event__id=id)
-    str={}
+    tstr={}
+    sum=0
     if request.method == 'POST':
-        for i in range(len(ticketsType)):
-            if request.POST.get(ticketsType[i].name, None):             
-                str[request.POST[ticketsType[i].name]=
-                
-        return HttpResponse(str)
+        i=0
+        if isPhone(request.POST['phone']):
+            for i in range(len(ticketsType)):
+                if request.POST.get(ticketsType[i].name, None):             
+                    tstr[request.POST[ticketsType[i].name]]=ticketsType[i].price
+                    sum+=float(ticketsType[i].price)
             
+            tdate=str(datetime.datetime.today())
+            tForm=TicketForm()    
+            cForm=CartForm(request.POST,initial={'consumerPhone':request.POST['phone'],'value':sum,'created': tdate})
+            
+#            if cForm.is_valid():
+#                    cForm.save()
+#            else:
+#                return HttpResponse('Cart failed go back and try again')
+#            
+#            cart = Cart.objects.get(consumerPhone=request.POST['phone'],created=tdate) 
+            
+            tickets = Ticket.objects.filter(event__id=id)
+            return HttpResponse(tickets)
+            
+            return HttpResponse(str)
+        else:
+            return HttpResponse('Enter a valid phnoe number and try again')
+                
     else:
         form = AddButton()
         return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})
