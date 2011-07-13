@@ -44,6 +44,11 @@ def view_map(request,id):
     event = Event.objects.get(id=id)
     ticketsType=TicketType.objects.filter(event__id=id)
     return render_to_response('baseApp/map.html', {'event_details':event})
+
+class CartForm(ModelForm):
+    class Meta:
+        model =Cart
+        #exclude=['author','post']     
        
 
 def cart_list(request,id):
@@ -62,11 +67,14 @@ def events_list(request,id):
 def event_detail(request,id):
     event = Event.objects.get(id=id)
     ticketsType=TicketType.objects.filter(event__id=id)
-    
+    str={}
     if request.method == 'POST':
-        for type in ticketsType:
-            if request.POST.get(type.name, False):
-                return HttpResponse(request.POST['qty'+type.name])
+        for i in range(len(ticketsType)):
+            if request.POST.get(ticketsType[i].name, None):             
+                str[request.POST[ticketsType[i].name]=
+                
+        return HttpResponse(str)
+            
     else:
         form = AddButton()
         return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})

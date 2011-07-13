@@ -3,7 +3,7 @@
 <div  data-role="page" data-theme="Swatch D"> 
 <div>
 <div align="center" data-role="header" data-theme="b">
-<a href="../baseApp/" >Back</a><p>List of Event Categories</p></div> 
+<a href="/baseApp" >Back</a><p>List of Event Categories</p></div> 
 {% for cat in category_list %}
 <ul data-role="listview" data-theme="c">
 <li><a href="/baseApp/events/{{ cat.id }}" rel="external", data-ajax="false">{{ cat.name }}</a></li>	

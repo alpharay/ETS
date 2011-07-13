@@ -2,7 +2,7 @@
 {% block content %}
 <div  data-role="page" data-theme="Swatch D"> 
 <div align="center" data-role="header" data-theme="b">
-<a rel="back" >Back</a><p>Event Detail</p>		
+<a href="/baseApp/events/{{event_details.category.id}}" >Back</a><p>Event Detail</p>		
 </div> 	
 <form method="post" data-ajax="false">
 {{ form }}
@@ -31,7 +31,7 @@
 <div data-position="inline">
 
 <p class="ui-li-desc" >
-<input type="checkbox" name="{{ttype}}_ticket" value="{{ttype}}" /> {{ttype}} : GHC{{ttype.price}}
+<input type="checkbox" name="{{ttype}}" value="{{ttype}}" /> {{ttype}} : GHC{{ttype.price}}
 </p>
 </div>
 {% endfor %}
@@ -43,7 +43,6 @@
 </ul>
 
 </form>
-<div>
 </div>
 
 </div>
