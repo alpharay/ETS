@@ -2,11 +2,13 @@
 {% block content %}
 <div  data-role="page" data-theme="Swatch D"> 
 
-<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview">
+<form method="post" data-ajax="false">
+{{ form }}
+
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
 <li class="ui-li ui-li-static ui-body-c ui-corner-top">
 <p class="ui-li-aside ui-li-desc">
-<strong>6:24</strong>
-PM
+<strong>Rating</strong>
 </p>
 <h3 class="ui-li-heading">{{ event_details.name }}</h3>
 <p class="ui-li-desc">
@@ -14,19 +16,35 @@ PM
 </p>
 <p class="ui-li-desc">{{ event_details.event_date}}</p>
 </li>
+<li class="ui-li ui-li-static ui-body-c ui-corner-bottom">
+<p class="ui-li-aside ui-li-desc">
+<strong></strong>
+
+</p>
+<h4 class="ui-li-heading">Tickets</h4>
+<p class="ui-li-desc">
+<strong></strong>
+</p>
+{% for ttype in ticket_types %}
+<div data-position="inline">
+
+<p class="ui-li-desc" >
+<input type="checkbox" name="{{ttype}}_ticket" value="{{ttype}}" /> {{ttype}} : GHC{{ttype.price}}
+</p>
+</div>
+{% endfor %}
+<div>
+<input name="{{ttype}}" type="submit" value="Add to cart..." data-icon="plus" data-iconpos="right" data-theme="b"/>
+</div>
+</li>
+<li><a href="../map/{{event_details.id}}" rel="external", data-ajax="false">View event location</a></li>	
 </ul>
 
-
-
+</form>
 <div>
-<h5>Event location</h5>
-{%if event_details.locationX%}
-<img src="http://maps.google.com/maps/api/staticmap?center={{ event_details.locationX}},{{ event_details.locationY}}&markers=color:blue%7Clabel:E%7C{{ event_details.locationX}},{{ event_details.locationY}}%7Ccolor:blue&zoom=15&size=300x400&sensor=false">
-{%else%}
-<img src="http://maps.google.com/maps/api/staticmap?center={{ event_details.venue }}&markers=color:blue%7Clabel:E%7C{{ event_details.locationX}},{{ event_details.locationY}}%7Ccolor:blue&zoom=15&size=300x400&sensor=false">
-{%endif%}
 </div>
 
 </div>
+
 {% endblock %}
 

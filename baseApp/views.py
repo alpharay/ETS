@@ -10,7 +10,10 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
 
-
+class CartForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    
 class AddButton(forms.Form):
     pass
     
@@ -37,6 +40,12 @@ def categories_list(request):
 #	class Meta:
 #		model=Event
 #		exclude=['post','author']
+def view_map(request,id):
+    event = Event.objects.get(id=id)
+    ticketsType=TicketType.objects.filter(event__id=id)
+    return render_to_response('baseApp/map.html', {'event_details':event})
+       
+
 def cart_list(request,id):
     if id:        
         cart = Ticket.objects.filter(Cart__id=id)
@@ -51,16 +60,13 @@ def events_list(request,id):
 
 @csrf_exempt
 def event_detail(request,id):
+    event = Event.objects.get(id=id)
+    ticketsType=TicketType.objects.filter(event__id=id)
     
     if request.method == 'POST':
-        pass
-        #create cart and add ticket information
-        #
+        for type in ticketsType:
+            if request.POST.get(type.name, False):
+                return HttpResponse(request.POST['qty'+type.name])
     else:
-        
         form = AddButton()
-        event = Event.objects.get(id=id)
-        tickets = Ticket.objects.filter(event__id=id)
-        type=TicketType.objects.filter(event__id=id)
-        #ticket types and thier count
-        return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'tickets':tickets,'ticket_types':type})
+        return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})

@@ -36,8 +36,6 @@ def signupView(request):
          #         form = CommentForm(initial={'id':comment.id,'body':comment.body,'author':comment.author})
    
     
-    
-    
 @csrf_exempt
 def loginView(request):
     if request.method == 'POST':

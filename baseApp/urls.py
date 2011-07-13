@@ -8,6 +8,7 @@ url(r'^bycategory$', 'baseApp.views.categories_list'),
 url(r'^events/(?P<id>\d+)$', 'baseApp.views.events_list'),
 #url(r'^login$', 'reg.views.blog_list'),
 url(r'^(detail|info)/(?P<id>\d+)$', 'baseApp.views.event_detail'),
+url(r'^map/(?P<id>\d+)$', 'baseApp.views.view_map'),
 #url(r'^search/(.+)*$', 'blog.views.blog_search'),
 #url(r'^editcomment/(?P<id>\d+)*/$', 'blog.views.edit_comment'),
 )

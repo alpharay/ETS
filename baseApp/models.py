@@ -108,6 +108,7 @@ class Ticket(models.Model):
     event=models.ForeignKey(Event,blank=True) 
     ticketType = models.ForeignKey(TicketType)
     pin=models.CharField(max_length=30)    
+    quantity=models.IntegerField(max_length=5)
     serialNo=models.CharField(max_length=30)
     #order =  models.CharField(max_length=30)
     def __unicode__(self):

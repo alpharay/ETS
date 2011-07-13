@@ -1,0 +1,19 @@
+{% extends 'baseApp/index.html' %}
+{% block content %}	
+	
+<div align="center" data-role="page" id="map" data-theme="Swatch D">
+<div>
+<div align="center" data-role="header" data-theme="b">
+		<p>Event location</p>		
+		</div> 	
+<div data-role="content">
+{%if event_details.locationX%}
+<img src="http://maps.google.com/maps/api/staticmap?center={{ event_details.locationX}},{{ event_details.locationY}}&markers=color:blue%7Clabel:E%7C{{ event_details.locationX}},{{ event_details.locationY}}%7Ccolor:blue&zoom=15&size=400x400&sensor=false">
+
+{%else%}
+<img align="center" src="http://maps.google.com/maps/api/staticmap?center={{ event_details.venue }}&markers=color:blue%7Clabel:E%7C%7Ccolor:blue&zoom=15&size=300x400&sensor=false">
+{%endif%}
+</div>
+</div> 
+
+{% endblock %}
