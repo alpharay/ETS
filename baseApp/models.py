@@ -75,7 +75,7 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class Cart(models.Model):
-    transactionID =  models.CharField(max_length=20)
+    transactionID =  models.CharField(max_length=20,blank=True)
     consumer=models.ForeignKey(User) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
     paymentType =  models.CharField(max_length=20)
@@ -151,8 +151,11 @@ class IncomingSMS(models.Model):
     sender=models.CharField(max_length=30)
     message=models.CharField(max_length=160)       
     created=models.DateTimeField(auto_now_add=True)
+    read=models.BooleanField()
+    transactionID=models.CharField(max_length=30)
+    amount=models.CharField(max_length=160) 
     def __unicode__(self):
-        return self.tag 
+        return self.sender 
 
 class IncomingSMSAdmin(admin.ModelAdmin):
     list_display = ('sender','created')
