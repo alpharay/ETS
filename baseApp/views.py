@@ -9,10 +9,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
-
-class CartForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
     
 class AddButton(forms.Form):
     pass
