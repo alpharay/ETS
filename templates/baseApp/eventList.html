@@ -4,7 +4,7 @@
 <div  data-role="page" data-theme="Swatch D"> 
 <div>
 <div align="center" data-role="header" data-theme="b">
-<a href="/baseApp/bycategory" >Back</a><p>Event List</p></div> 
+<a href="/baseApp/bycategory" rel="external">Back</a><p>Event List</p></div> 
 {% for event in events %}
 <ul data-role="listview" data-theme="c">
 <li><a href="/baseApp/detail/{{ event.id }}" rel="external", data-ajax="false">{{ event.name}}</a></li>	

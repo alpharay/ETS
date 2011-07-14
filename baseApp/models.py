@@ -76,17 +76,17 @@ class EventAdmin(admin.ModelAdmin):
 
 class Cart(models.Model):
     transactionID =  models.CharField(max_length=20,blank=True)
-    consumerPhone=models.CharField(max_length=20) 
+    cPhone=models.CharField(max_length=20) 
     value=models.DecimalField(max_digits=10,decimal_places=2)
     paymentType =  models.CharField(max_length=20,blank=True)
     operator =  models.CharField(max_length=20,blank=True)
     created=models.DateTimeField(auto_now_add=True)
     paid =  models.BooleanField()
     def __unicode__(self):
-        return self.paymentType+' '+self.cart 
+        return self.cPhone+' Paid='+str(self.paid) 
 
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('consumerPhone','transactionID','paymentType','created','value','paid')
+    list_display = ('cPhone','transactionID','paymentType','created','value','paid')
     search_fields = ('transactionID','cart','value','created')
     list_filter = ('created','paid')
     #inlines = [TicketInLine]
@@ -108,7 +108,7 @@ class Ticket(models.Model):
     event=models.ForeignKey(Event) 
     ticketType = models.ForeignKey(TicketType)
     pin=models.CharField(max_length=30)    
-    quantity=models.IntegerField(max_length=5)
+    #quantity=models.IntegerField(max_length=5)
     serialNo=models.CharField(max_length=30)
     #order =  models.CharField(max_length=30)
     def __unicode__(self):

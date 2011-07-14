@@ -1,7 +1,54 @@
 {% extends 'baseApp/index.html' %}
 {% block content %}
-<div data-role="content">
-am here baby
+<div data-role="page" data-theme="Swatch D">
+<div align="center" data-role="header" data-theme="b">
+<a href="/baseApp/" rel="external">Back</a>
+<p>Add Event </p>		
+</div> 
+<div>
+
+
+
+
+
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
+<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+<p class="ui-li-aside ui-li-desc">
+
+</p>
+<p class="ui-li-desc">
+<div align="center">
+{% if logged_in %}
+<form  method="post" data-ajax="false">
+{{ form.as_p }}
+<div data-role="fieldcontain">
+<input name="addevent" type="hidden" value="addevent" />
+<p>Event name: <input name="name" type="text" value="" /></p>
+<p>Date and time: <input name="date" type="text" value="" /></p>
+<p>Event category:
+<select width="5" "selectmenu" name="category" id="select-choice-1" data-role="none">
+{% for cat in categories %}
+<option value="{{ cat.name }}">{{ cat.name }}</option>
+{% endfor %}
+</select>
+</p> 
+</div>
+
+<p>Venue: <input name="venue" type="text" value="" /></p>
+<p>GPS coordX: <input name="gpsx" type="text" value="" /></p>
+<p>GPS coordY: <input name="gpsy" type="text" value="" /></p>
+<input type="submit" value="Generate Tickets" data-icon="plus" data-iconpos="right" data-theme="b" /></p>
+</form>
+</li>
+</ul>
+{% else %}
+
+<h4>Please signup to add event<h4>
+<a href="/reg/signup/">signup</a>
+
+{% endif %}
+
 </div>
 {% endblock %}
+
 

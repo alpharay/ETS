@@ -1,0 +1,19 @@
+{% extends 'baseApp/index.html' %}
+{% block content %}	
+	
+<div align="center" data-role="page" id="map" data-theme="Swatch D">
+<div>
+<div align="center" data-role="header" data-theme="b">
+<a href="../detail/{{event_details.id}}" rel="external">Back</a><p>Generate ticket</p>		
+</div> 	
+<div data-role="content">
+i am ticket
+{%if event_details.locationX%}
+
+{%else%}
+
+{%endif%}
+</div>
+</div> 
+
+{% endblock %}

@@ -2,7 +2,7 @@
 {% block content %}
 <div  data-role="page" data-theme="Swatch D"> 
 <div align="center" data-role="header" data-theme="b">
-<a href="/baseApp/events/{{event_details.category.id}}" >Back</a><p>Event Detail</p>		
+<a href="/baseApp/events/{{event_details.category.id}}" rel="external">Back</a><p>Event Detail</p>		
 </div> 	
 <form method="post" data-ajax="false">
 {{ form }}
@@ -35,11 +35,13 @@
 </p>
 </div>
 {% endfor %}
+
 <div>
 <p>Phone:  <input name="phone" type="text" value="" /></p>
 <input name="{{ttype}}" type="submit" value="Add to cart..." data-icon="plus" data-iconpos="right" data-theme="b"/>
 </div>
 </li>
+<li><h5 align="center"><a align="center">{{msg}}</a></h5></li>
 <li><a href="../map/{{event_details.id}}" rel="external", data-ajax="false">View event location</a></li>	
 </ul>
 
