@@ -1,0 +1,8 @@
+<a href="../">Back</a>
+<div>Edit your suggestion:</div>
+<form method='post' action="">
+{{ form }}
+<input type='submit' name='Submit'>
+</form>
+{% endblock %}
+

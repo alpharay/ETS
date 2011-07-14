@@ -1,4 +1,5 @@
 {% extends 'baseApp/welcome.html' %}
+
 {% block content %}
 {{ msg }}
 {% for suggestion in suggestions %}

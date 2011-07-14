@@ -108,3 +108,51 @@ def event_detail(request,id):
     else:
         form = AddButton()
         return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})
+        
+        
+class SuggestionForm(ModelForm):
+	class Meta:
+		model=Suggestion
+		exclude = ['consumer','created']
+
+@csrf_exempt
+def addSuggestion(request):
+	suggestions = Suggestion.objects.all()
+	msg=''
+	#Start of form code
+	comment = Suggestion()
+	if request.method == 'POST':
+		if request.user.is_authenticated():
+			comment = Suggestion(consumer=request.user)
+		else:
+			comment = Suggestion()
+		
+		form = SuggestionForm(request.POST, instance = comment)
+		if form.is_valid():
+			form.save()
+			msg = 'Your suggestion has been saved'
+			return render_to_response('baseApp/suggestions.html', {'suggestions':suggestions,'msg':msg,'form':form.as_p() })
+	else:
+		form = SuggestionForm()
+		#end of form code
+		return render_to_response('baseApp/suggestions.html', {'suggestions':suggestions,'msg':msg,'form':form.as_p() })
+
+#@csrf_exempt
+#def editSuggestion(request, id):
+#	msg=''
+#	comment = Suggestion.objects.get(id=id)
+#	#Start of form code
+#	if request.user == suggestion.consumer:
+#		if request.method == 'POST':
+#			form = SuggestionForm(request.POST, instance = comment)
+#			if form.is_valid():
+#				form.save()
+#				msg = 'Your suggestion has been saved'
+#				return render_to_response('baseApp/editsuggestion.html', {'msg':msg,'form':form.as_p() })	
+#		else:
+#			form = SuggestionForm(instance = comment)
+#			#end of form code
+#			return render_to_response('baseApp/editsuggestion.html', {'msg':msg,'form':form.as_p() })
+#	else:
+#		msg = 'You do not have permission to edit this comment'
+#		return render_to_response('baseApp/editsuggestion.html', {'msg':msg,'form':form.as_p() })
