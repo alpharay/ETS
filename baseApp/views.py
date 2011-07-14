@@ -210,7 +210,6 @@ def addEvent_view(request):
             return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':e,'isaddevent':True})
               
     else:
-<<<<<<< HEAD
         form = AddButton()
         return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})
         
@@ -261,7 +260,6 @@ def addSuggestion(request):
 #	else:
 #		msg = 'You do not have permission to edit this comment'
 #		return render_to_response('baseApp/editsuggestion.html', {'msg':msg,'form':form.as_p() })
-=======
         form = AddEventForm() 
         return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
 
@@ -276,5 +274,3 @@ def suggest_view(request):
 
 
 
-
->>>>>>> e8a9c0b36769ffb42020e214b691aa856fe31138
