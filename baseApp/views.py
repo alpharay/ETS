@@ -12,7 +12,13 @@ from django import forms
 import time
 import datetime
 import re
+from django.forms.widgets import *
+from django.forms.extras.widgets import *
     
+class AddForm(forms.Form):
+    pass
+    
+
 def home(request):
     t = loader.get_template('baseApp/welcome.html')
     c = Context(dict())
@@ -46,7 +52,7 @@ class CartForm(ModelForm):
         #exclude=['author','post']     
 class AddEventForm(forms.Form):
     pass
- 
+    
 
 def cart_list(request,id):
     if id:        
@@ -161,18 +167,35 @@ def addEvent_view(request):
     categories = EventCategory.objects.all() 
    # return HttpResponse(str(datetime.datetime.today()))     
     if request.method == 'POST':  
-        categories = EventCategory.objects.get(name=request.POST['category'])
+        
         if request.POST.get('addevent', None):
-            form = AddEventForm(request.POST)
-            e=Event(name=request.POST['name'],category=categories,venue=request.POST['venue'],
-                    locationX=request.POST['gpsx'],locationY=request.POST['gpsy'],
-                    event_date=request.POST['date'],created=str(datetime.datetime.today()))
-            e.save()
-            event=request.POST['name']
-            return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':e,'isaddevent':True})
+            categories = EventCategory.objects.get(name=request.POST['category'])
+            if request.POST.get('name', None) or request.POST.get('venue', None) or request.POST.get('date', None):
+                form = AddEventForm(request.POST)
+                try: 
+                    event=Event.objects.get(name=request.POST['name'])
+                    e=Event(name=request.POST['name'],category=categories,venue=request.POST['venue'],
+                            locationX=request.POST['gpsx'],locationY=request.POST['gpsy'],
+                            event_date=request.POST['date'],event_Rep=request.user,created=str(datetime.datetime.today()))
+                    e.save()
+                    event=request.POST['name']
+                    return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':e,'isaddevent':True})
+                except:
+                    categories = EventCategory.objects.all() 
+                    form = AddEventForm()
+                    msg="an event with this name already exists"
+                    return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories,'msg':msg})
+    
+                        
+            else:
+                categories = EventCategory.objects.all() 
+                form = AddEventForm()
+                msg="Please fill empty fields to contineu"
+                return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories,'msg':msg})
+
+                
         else:
-            form = AddEventForm(request.POST)
-            event=Event.objects.get(name=request.POST['name'])
+            event=Event.objects.get(name=str(request.POST['name']))
             
             for i in range(int(request.POST['qty'])):
                 pin=int(random.random()*10000000000000)
@@ -181,12 +204,14 @@ def addEvent_view(request):
                 t=Ticket(event=event,ticketType=request.POST['ttyp'],pin=pin,
                         serialNo=sn)
                 t.save()
-            return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':event,'isaddevent':True})        
-    
+                
+            msg=str(request.POST['qty'])+' '+str(request.POST['ttyp'])+" tickets has been generated for "+str(request.POST['name'])
+            form = AddEventForm()
+            return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':e,'isaddevent':True})
+              
     else:
-         form = AddEventForm()
-         #return HttpResponse(form.as_p())
-         return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
+        form = AddEventForm() 
+        return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
 
 
 @csrf_exempt

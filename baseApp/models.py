@@ -60,7 +60,7 @@ class Event(models.Model):
     venue = models.CharField(max_length=30)
     locationX = models.CharField(max_length=30,blank=True)# *
     locationY = models.CharField(max_length=30,blank=True)# *
-    event_date=models.DateTimeField()
+    event_date=models.CharField(max_length=30)
     created=models.DateField(auto_now_add=True)
     #event_Rep=models.ForeignKey(EventOrganizer)
     event_Rep=models.ForeignKey(User)   

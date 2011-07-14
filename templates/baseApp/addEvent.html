@@ -18,6 +18,7 @@
 </p>
 <p class="ui-li-desc">
 <div align="center">
+
 {% if logged_in %}
 <form  method="post" data-ajax="false">
 {{ form.as_p }}
@@ -37,17 +38,18 @@
 <p>Venue: <input name="venue" type="text" value="" /></p>
 <p>GPS coordX: <input name="gpsx" type="text" value="" /></p>
 <p>GPS coordY: <input name="gpsy" type="text" value="" /></p>
-<input type="submit" value="Generate Tickets" data-icon="plus" data-iconpos="right" data-theme="b" /></p>
+<input type="submit" value="Create Tickets" data-icon="plus" data-iconpos="right" data-theme="b" /></p>
 </form>
 </li>
+<li><h5 align="center"><a align="center">{{msg}}</a></h5></li>
 </ul>
 {% else %}
 
-<h4>Please signup to add event<h4>
-<a href="/reg/signup/">signup</a>
+<h4>Please login to add event<h4>
+<a href="reg/login/" rel="external">Login</a>
 
 {% endif %}
-
+</div>
 </div>
 {% endblock %}
 
