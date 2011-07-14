@@ -14,13 +14,8 @@
 		
 		<ul data-role="listview" data-theme="c">
 			<li><a href="bycategory" rel="external", data-ajax="false">Categories</a></li>			
-<<<<<<< HEAD
-			<li><a href="addEvent"rel="external", data-ajax="false" >Add Event</a></li>
-			<li><a href="suggestions" rel="external", data-ajax="false">Suggestions</a></li>
-=======
 			<li><a href="addEvent.html" rel="external", data-ajax="false" >Add Event</a></li>
 			<li><a href="suggestions.html" rel="external", data-ajax="false">Suggestions</a></li>
->>>>>>> 7acd56e819af585fad29720db9c58f7a15924e94
 		</ul>  
 
 		<div align="left" data-role="content">
