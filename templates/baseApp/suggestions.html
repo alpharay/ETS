@@ -1,17 +1,38 @@
 {% extends 'baseApp/welcome.html' %}
 {% block content %}
 {{ msg }}
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">
+<a href="../../../baseApp/" rel="external">Back</a><p>Add your suggestion:</p><a href='../../../baseApp' rel="external", data-ajax="false">Done</a>
+</div> 	
+<div data-role="content">
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
+<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+<p class="ui-li-aside ui-li-desc">
+
+</p>
+<p class="ui-li-desc">
+<div align="center">
+<p>
 {% for suggestion in suggestions %}
 <ul>
-<li>Posted on {{ suggestion.created }} </li>
-<li>{{ suggestion.suggestion|linebreaks }}</li>
-<br />
+
+<p><h4>{{ suggestion.name }}</h4></p>
+<p><h4>{{ suggestion.suggestion|linebreaks }}</h4></p>
+<p><h5>Posted on {{ suggestion.created }}</h5></p>
+</p>
+
+<div>
 </ul>
 {% endfor %}
-<br />
-<div>Add your suggestion:</div>
-<form method='post' action="">
-{{ form }}
-<input type='submit' name='Submit'>
+</p>
+
+<form method='post' action="" data-ajax="false">
+<p>{{ form }}</p>
+<input type='submit' name='Submit' value="Submit">
 </form>
+
+</div> 
+</div> 
+
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'baseApp/index.html' %}
+{% block content %}
+
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">
+<a href="../../../baseApp/" rel="external">Back</a><p>Cart list</p><a href='../../../baseApp' rel="external", data-ajax="false">Done</a>
+
+{% for cat in category_list %}
+<ul data-role="listview" data-theme="c">
+<li><a href="/baseApp/events/{{ cat.id }}" rel="external", data-ajax="false">{{ cat.name }}</a></li>	
+</ul>
+{% endfor %}
+</div>
+
+
+
+{% endblock %}
+

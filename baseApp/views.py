@@ -59,6 +59,8 @@ class CartForm(ModelForm):
 class AddEventForm(forms.Form):
     pass
     
+class CartForm(forms.Form):
+    pass
 
 def cart_list(request,id):
     if id:        
@@ -130,14 +132,20 @@ def event_detail(request,id):
                     c.save()
                        
                     try:# add tickets to cart      
-                        cart = Cart.objects.get(created=tdate,cPhone=request.POST['phone'],paid=False) 
-                        for j in range(len(tstr)):
-                             tyt=TicketType.objects.get(name=tstr[j])
-                             tickets = Ticket.objects.filter(eventevent=event,ticketType=tyt)[:1]
-                             t=Ticket(id=tickets.id,cart=cart.cPhone,paid=True)
-                             t.save()
-                             msg='Ticket has been added to cart successfully click on cart to checkoff or add more to cart'  
-                             return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType,'tickets':allTickets,'msg':msg})     
+                        cart=Cart.objects.get(cPhone=request.POST['phone'],paid=False)
+                        for k in range(len(tstr)):  
+                            
+                            tyt=TicketType.objects.get(name=tstr[k]) 
+                                     
+                            tick = Ticket.objects.filter(event=event,ticketType=tyt,paid=False)[:1]
+                            t = Ticket.objects.get(serialNo=tick[0])
+    #                        return HttpResponse(t.paid) 
+                            t.paid=True
+                            t.cart=cart.cPhone                    
+                            t.save()
+                            msg='Ticket has been added to cart successfully click on cart to checkoff or add more to cart'  
+                            return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType,'tickets':allTickets,'msg':msg})     
+                                
                     except:
                         msg='ticket/s cannot be added, try again'
                         return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType,'tickets':allTickets,'msg':msg})                 
@@ -231,14 +239,14 @@ def addEvent_view(request):
             return render_to_response('baseApp/ticket.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'event':event,'isaddevent':True,'msg':msg})
               
     else:
-        form = AddButton()
-        return render_to_response('baseApp/eventDetails.html', {'event_details':event,'form':form.as_p(),'ticket_types':ticketsType})
-        
+        form = AddEventForm() 
+        return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
+
         
 class SuggestionForm(ModelForm):
 	class Meta:
 		model=Suggestion
-		exclude = ['consumer','created']
+		exclude = ['created',]
 
 @csrf_exempt
 def addSuggestion(request):
@@ -248,7 +256,7 @@ def addSuggestion(request):
 	comment = Suggestion()
 	if request.method == 'POST':
 		if request.user.is_authenticated():
-			comment = Suggestion(consumer=request.user)
+			comment = Suggestion(name=request.user.username)
 		else:
 			comment = Suggestion()
 		
@@ -281,8 +289,8 @@ def addSuggestion(request):
 #	else:
 #		msg = 'You do not have permission to edit this comment'
 #		return render_to_response('baseApp/editsuggestion.html', {'msg':msg,'form':form.as_p() })
-        form = AddEventForm() 
-        return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
+#        form = AddEventForm() 
+#        return render_to_response('baseApp/addEvent.html', {'form':form.as_p(),'logged_in':request.user.is_authenticated(),'categories':categories})
 
 
 @csrf_exempt
@@ -291,7 +299,16 @@ def ticket_view(request):
 
 @csrf_exempt
 def Cart_view(request): 
-    return HttpResponse('cut') 
+    suggestions = Suggestion.objects.all()
+    comment = Suggestion()
+    if request.method == 'POST':
+        if request.POST.get("phone", None): 
+            cart=Cart.objects.filter(cPhone=request.POST['phone'],paid=False)
+            return render_to_response('baseApp/cartlist.html', {'cart':cart })
+    else:
+        form = CartForm()
+        #end of form code
+        return render_to_response('baseApp/cart.html', {'form':form.as_p() })
 
 
 @csrf_exempt

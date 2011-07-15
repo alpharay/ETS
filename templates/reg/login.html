@@ -1,8 +1,21 @@
-<a href='../../' rel="external", data-ajax="false">Home</a><br />
+{% extends 'baseApp/index.html' %}
+{% block content %}
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">
+<a href="../../../baseApp/" rel="external">Back</a><p>Create an account</p><a href='../../../baseApp' rel="external", data-ajax="false">Home</a>
+</div> 	
+<div data-role="content">
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
+<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+<p class="ui-li-aside ui-li-desc">
+
+</p>
+<p class="ui-li-desc">
+<div align="center">
 	{% if logged_in %}
-		<div>You are already logged in. <a href='../logout'>Logout here</a></div>
+		<div>You are already logged in. <a href='../logout' data-ajax="false">Logout here</a></div>
 	{% else %}
-    <form action="." method="POST">
+    <form action="." method="POST" data-ajax="false">
     {% csrf_token %} 
         {% for field in auth_form %}
              <div class="fieldWrapper">
@@ -20,3 +33,12 @@
         {{ auth_form.non_field_errors }}
         </div>
 	{% endif %}
+
+</li>
+</ul>
+<div>
+<div>
+</div> 
+</div> 
+</div> 
+{% endblock %}

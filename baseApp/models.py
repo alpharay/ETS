@@ -122,14 +122,14 @@ class TicketAdmin(admin.ModelAdmin):
     search_fields = ('ticketType','event')
         
 class Suggestion(models.Model):
-    consumer =  models.ForeignKey(User,blank=True)
+    name =  models.CharField(max_length=30,blank=True)
     suggestion =  models.TextField(max_length=30)
     created=models.DateField(auto_now_add=True)   
     def __unicode__(self):
         return self.suggestion 
 
 class SuggestionAdmin(admin.ModelAdmin):
-    list_display = ('consumer','created')
+    list_display = ('name','created')
     list_filter = ('created',)
 
 

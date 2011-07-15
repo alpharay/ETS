@@ -1,3 +1,26 @@
-<a href='../../' rel="external", data-ajax="false">Home</a><br />
+{% extends 'baseApp/index.html' %}
+{% block content %}
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">
+<a href="../../../baseApp/" rel="external">Back</a><p>Create an account</p><a href='../../../baseApp' rel="external", data-ajax="false">Home</a>
+</div> 	
+<div data-role="content">
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
+<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+<p class="ui-li-aside ui-li-desc">
+
+</p>
+<p class="ui-li-desc">
+<div align="center">
+
 You have been successfully logged out. <br />
 <a href='../login' rel="external", data-ajax="false">login here</a>
+
+</li>
+</ul>
+<div>
+<div>
+</div> 
+</div> 
+</div> 
+{% endblock %}

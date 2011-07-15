@@ -1,6 +1,19 @@
-<a href='../../' rel="external", data-ajax="false">Home</a><br />
-  <h1>Create an account</h1>
-  <form action="." method="post">
+{% extends 'baseApp/index.html' %}
+{% block content %}
+<div  data-role="page" data-theme="Swatch D"> 
+<div align="center" data-role="header" data-theme="b">
+<a href="../../../baseApp/" rel="external">Back</a><p>Create an account</p><a href='../../../baseApp' rel="external", data-ajax="false">Home</a>
+</div> 	
+<div data-role="content">
+<ul class=" ui-listview ui-listview-inset ui-corner-all ui-shadow " data-inset="true" data-role="listview" >
+<li class="ui-li ui-li-static ui-body-c ui-corner-top">
+<p class="ui-li-aside ui-li-desc">
+
+</p>
+<p class="ui-li-desc">
+<div align="center">
+
+  <form action="." method="post" data-ajax="false">
     {% if form.error_dict %}
       <p class="error">Please correct the errors below.</p>
     {% endif %}
@@ -8,17 +21,25 @@
     {% if form.username.errors %}
       {{ form.username.html_error_list }}
     {% endif %}
-    <label for="id_username">Username:</label> {{ form.username }}
+   <p><label for="id_username">Username:</label> {{ form.username }}</p>
 
     {% if form.password1.errors %}
       {{ form.password1.html_error_list }}
     {% endif %}
-    <label for="id_password1">Password: {{ form.password1 }}
+     <p><label for="id_password1">Password: {{ form.password1 }} </p>
 
     {% if form.password2.errors %}
       {{ form.password2.html_error_list }}
     {% endif %}
-    <label for="id_password2">Password (again): {{ form.password2 }}
+    <p> <label for="id_password2">Password: {{ form.password2 }} (*retype password)</p>
 
-    <input type="submit" value="Create the account" />
+    <p> <input type="submit" value="Create the account" /> </p>
   </label>
+</li>
+</ul>
+<div>
+<div>
+</div> 
+</div> 
+</div> 
+{% endblock %}
