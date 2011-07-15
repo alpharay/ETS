@@ -104,20 +104,21 @@ class TicketTypeAdmin(admin.ModelAdmin):
     search_fields = ('name','event')
 
 class Ticket(models.Model):
-    cart=models.ForeignKey(Cart,blank=True) 
+    cart=models.CharField(max_length=30,blank=True)
     event=models.ForeignKey(Event) 
     ticketType = models.ForeignKey(TicketType)
     pin=models.CharField(max_length=30)    
     #quantity=models.IntegerField(max_length=5)
     serialNo=models.CharField(max_length=30)
+    paid =  models.BooleanField()
     #order =  models.CharField(max_length=30)
     def __unicode__(self):
-        return self.ticketType 
+        return self.serialNo
 
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('pin','serialNo','ticketType')
+    list_display = ('pin','serialNo','ticketType','cart','paid')
     search_fields = ('ticketType','event')
         
 class Suggestion(models.Model):
